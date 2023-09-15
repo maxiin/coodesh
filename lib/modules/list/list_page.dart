@@ -8,7 +8,7 @@ class ListPage extends StatefulWidget {
 }
 
 class ListPageState extends State<ListPage> {
-  final List<int> _items = List.generate(20, (index) => index); // Initial list of items.
+  final List<int> _items = List.generate(40, (index) => index); // Initial list of items.
 
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
@@ -47,16 +47,23 @@ class ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GridView.builder(
+        shrinkWrap: true,
         controller: _scrollController,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
+          childAspectRatio: 2
         ),
         itemCount: _items.length + 1, // Add 1 for loading indicator.
         itemBuilder: (context, index) {
           if (index < _items.length) {
             return GridTile(
               child: Center(
-                child: Text('Item ${_items[index]}'),
+                child: OutlinedButton(
+                  onPressed: () {
+                      // Respond to button press
+                  },
+                  child: Text('Item: ${_items[index]}'),
+                )
               ),
             );
           } else if (_isLoading) {
