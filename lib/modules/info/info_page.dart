@@ -116,28 +116,34 @@ class InfoPageState extends State<InfoPage> {
 
   // ignore: non_constant_identifier_names
   Widget MeaningBox(String key, List<String> meanings) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            key,
-            style: const TextStyle(
-              fontSize: 12.0,
-              fontStyle: FontStyle.italic,
+    return Row(
+      children: [
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  key,
+                  style: const TextStyle(
+                    fontSize: 12.0,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                ...meanings.mapIndexed((index, e) => 
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      '${index+1} - $e'
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
-          ...meanings.mapIndexed((index, e) => 
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                '${index+1} - $e'
-              ),
-            ),
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 

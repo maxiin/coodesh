@@ -10,7 +10,10 @@ class Word {
   });
 
   factory Word.fromJson(Map<String, dynamic> json) {
-    final results = (json['results'] as List<dynamic>);
+    List<dynamic> results = [];
+    if(json['results'] != null){
+      results = (json['results'] as List<dynamic>);
+    }
     final definitionMap = <String, List<String>>{};
 
     for (final result in results) {
@@ -24,10 +27,17 @@ class Word {
       }
     }
 
+    String pronunciation;
+    if(json['pronunciation'].runtimeType == String){
+      pronunciation = json['pronunciation'];
+    } else {
+      pronunciation = json['pronunciation']['all'];
+    }
+
     return Word(
       word: json['word'],
       definitions: definitionMap,
-      pronunciation: json['pronunciation']['all'],
+      pronunciation: pronunciation,
     );
   }
 }
