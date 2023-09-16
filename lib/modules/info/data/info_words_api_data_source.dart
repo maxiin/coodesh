@@ -22,7 +22,7 @@ class InfoWordsApiDataSource {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return Right(Word.fromJson(data));
+        return Right(Word.fromApiJson(data));
       } else {
         debugPrint('Request failed with status: ${response.statusCode}');
         return Left(ApiFailure(message: response.body, code: response.statusCode));

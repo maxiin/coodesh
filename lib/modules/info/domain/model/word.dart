@@ -10,6 +10,14 @@ class Word {
   });
 
   factory Word.fromJson(Map<String, dynamic> json) {
+    return Word(
+      word: json['word'],
+      definitions: Map<String, List<String>>.from(json['definitions']),
+      pronunciation: json['pronunciation'],
+    );
+  }
+
+  factory Word.fromApiJson(Map<String, dynamic> json) {
     List<dynamic> results = [];
     if(json['results'] != null){
       results = (json['results'] as List<dynamic>);
@@ -39,5 +47,13 @@ class Word {
       definitions: definitionMap,
       pronunciation: pronunciation,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'word': word,
+      'definitions': definitions,
+      'pronunciation': pronunciation,
+    };
   }
 }
