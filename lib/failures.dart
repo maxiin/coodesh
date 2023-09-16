@@ -16,3 +16,7 @@ class FileFailure extends Failure {
 class GenericFailure extends Failure {
   GenericFailure({required message}): super(message: message);
 }
+
+class ArgumentFailure extends Failure {
+  ArgumentFailure({required message}): super(message: message);
+}

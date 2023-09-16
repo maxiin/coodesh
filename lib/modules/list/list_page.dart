@@ -1,4 +1,5 @@
 import 'package:coodesh/failures.dart';
+import 'package:coodesh/modules/list/data/list_file_data_source.dart';
 import 'package:coodesh/modules/list/domain/list_repository.dart';
 import 'package:coodesh/modules/list/domain/list_usecase.dart';
 import 'package:dartz/dartz.dart' as dz;
@@ -24,7 +25,8 @@ class ListPageState extends State<ListPage> {
     super.initState();
 
     // Setup get.it dependencies
-    _getIt.registerLazySingleton<ListRepository>(() => ListRepository());
+    _getIt.registerLazySingleton<ListFileDataSource>(() => ListFileDataSource());
+    _getIt.registerLazySingleton<ListRepository>(() => ListRepository(_getIt<ListFileDataSource>()));
     _getIt.registerLazySingleton<ListUseCase>(() => ListUseCase(_getIt<ListRepository>()));
 
     // Listen to scroll events and load more data when reaching the end.
