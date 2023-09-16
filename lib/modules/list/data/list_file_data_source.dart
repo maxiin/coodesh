@@ -17,7 +17,7 @@ class ListFileDataSource {
     for (var line in lines) {
       currentLine++;
       if (currentLine >= startLine && currentLine <= endLine) {
-        linesInRange.add(line);
+        linesInRange.add(line.replaceAll('\r', ''));
       }
       if (currentLine > endLine) {
         break; // Stop reading after reaching the end line
