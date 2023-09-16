@@ -7,11 +7,10 @@ class ListRepository {
 
   ListRepository(this.fileDataSource);
 
-  int SIZE = 40;
+  final int size = 40;
 
   Future<Either<Failure, List<String>>> fetchWordList(int lastIndex) async {
-    List<String> words = await fileDataSource.getLines(lastIndex, lastIndex + SIZE);
-    // final List<String> items = List.generate(40, (index) => (index + lastIndex).toString()); // Initial list of items.
+    List<String> words = await fileDataSource.getLines(lastIndex, lastIndex + size);
     return Right(words);
   }
 }

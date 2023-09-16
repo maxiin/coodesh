@@ -26,9 +26,13 @@ class ListPageState extends State<ListPage> {
     super.initState();
 
     // Setup get.it dependencies
-    _getIt.registerLazySingleton<ListFileDataSource>(() => ListFileDataSource());
-    _getIt.registerLazySingleton<ListRepository>(() => ListRepository(_getIt<ListFileDataSource>()));
-    _getIt.registerLazySingleton<ListUseCase>(() => ListUseCase(_getIt<ListRepository>()));
+    try{
+      _getIt.registerLazySingleton<ListFileDataSource>(() => ListFileDataSource());
+      _getIt.registerLazySingleton<ListRepository>(() => ListRepository(_getIt<ListFileDataSource>()));
+      _getIt.registerLazySingleton<ListUseCase>(() => ListUseCase(_getIt<ListRepository>()));
+    } catch(e) {
+      debugPrint(e.toString());
+    }
 
     // Listen to scroll events and load more data when reaching the end.
     _scrollController.addListener(() {
@@ -59,7 +63,6 @@ class ListPageState extends State<ListPage> {
           debugPrint('${fail.runtimeType}: ${fail.message}');
         }
         _isLoading = false;
-        debugPrint(_items.length.toString());
       });
     }
   }

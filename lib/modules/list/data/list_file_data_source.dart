@@ -22,7 +22,6 @@ class ListFileDataSource {
       if (currentLine > endLine) {
         break; // Stop reading after reaching the end line
       }
-      debugPrint(currentLine.toString());
     }
 
     return linesInRange;

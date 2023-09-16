@@ -5,7 +5,7 @@ class FavoritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("FavoritePage");
+    return const Text("FavoritePage");
   }
 
 }

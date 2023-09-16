@@ -101,7 +101,7 @@ class InfoPageState extends State<InfoPage> {
   // ignore: non_constant_identifier_names
   Widget MeaningList() {
     if(_wordObj == null){
-      return Text('No Meaning saved, need to prepare');
+      return const Text('TODO Meaning Saving');
     }
     List<Widget> widgets = [];
 
