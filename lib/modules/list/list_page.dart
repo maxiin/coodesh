@@ -1,4 +1,5 @@
 import 'package:coodesh/failures.dart';
+import 'package:coodesh/modules/info/info_page.dart';
 import 'package:coodesh/modules/list/data/list_file_data_source.dart';
 import 'package:coodesh/modules/list/domain/list_repository.dart';
 import 'package:coodesh/modules/list/domain/list_usecase.dart';
@@ -80,7 +81,10 @@ class ListPageState extends State<ListPage> {
               child: Center(
                 child: OutlinedButton(
                   onPressed: () {
-                      // Respond to button press
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InfoPage(_items[index])),
+                      );
                   },
                   child: Text(_items[index]),
                 )
