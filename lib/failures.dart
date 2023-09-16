@@ -12,3 +12,7 @@ class ApiFailure extends Failure {
 class FileFailure extends Failure {
   FileFailure({required message}): super(message: message);
 }
+
+class GenericFailure extends Failure {
+  GenericFailure({required message}): super(message: message);
+}

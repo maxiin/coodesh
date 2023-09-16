@@ -1,4 +1,9 @@
+import 'package:coodesh/failures.dart';
+import 'package:coodesh/modules/list/domain/list_repository.dart';
+import 'package:coodesh/modules/list/domain/list_usecase.dart';
+import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({super.key});
@@ -8,14 +13,19 @@ class ListPage extends StatefulWidget {
 }
 
 class ListPageState extends State<ListPage> {
-  final List<int> _items = List.generate(40, (index) => index); // Initial list of items.
-
+  final List<String> _items = [];
+  final GetIt _getIt = GetIt.instance;
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
+
 
   @override
   void initState() {
     super.initState();
+
+    // Setup get.it dependencies
+    _getIt.registerLazySingleton<ListRepository>(() => ListRepository());
+    _getIt.registerLazySingleton<ListUseCase>(() => ListUseCase(_getIt<ListRepository>()));
 
     // Listen to scroll events and load more data when reaching the end.
     _scrollController.addListener(() {
@@ -24,21 +34,29 @@ class ListPageState extends State<ListPage> {
         _loadMoreItems();
       }
     });
+    _loadMoreItems();
   }
 
   // Simulate loading more items.
   Future<void> _loadMoreItems() async {
+    final getListUseCase = _getIt<ListUseCase>();
     if (!_isLoading) {
       setState(() {
         _isLoading = true;
       });
 
-      // Simulate loading delay (you can replace this with your data fetching logic).
-      await Future.delayed(const Duration(seconds: 2));
+      dz.Either<Failure, List<String>> response = await getListUseCase.call(_items.length);
 
       setState(() {
-        _items.addAll(List.generate(20, (index) => index + _items.length));
+        if(response.isRight()){
+          List<String> list = response.getOrElse(() => []);
+          _items.addAll(list);
+        } else {
+          Failure fail = response.fold((l) => l, (r) => GenericFailure(message: 'Other'));
+          debugPrint('${fail.runtimeType}: ${fail.message}');
+        }
         _isLoading = false;
+        debugPrint(_items.length.toString());
       });
     }
   }
@@ -62,7 +80,7 @@ class ListPageState extends State<ListPage> {
                   onPressed: () {
                       // Respond to button press
                   },
-                  child: Text('Item: ${_items[index]}'),
+                  child: Text(_items[index]),
                 )
               ),
             );
