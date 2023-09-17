@@ -22,6 +22,8 @@ class InfoPageState extends State<InfoPage> {
   final GetIt _getIt = GetIt.instance;
   Word? _wordObj;
   bool _isLoading = true;
+  bool _isFavorite = false;
+  late Box<bool> favoriteBox;
 
   @override
   void initState() {
@@ -36,9 +38,16 @@ class InfoPageState extends State<InfoPage> {
       debugPrint(e.toString());
     }
 
+    getFavoriteBox();
+
     _wordObj = Word(word: widget.word, definitions: {}, pronunciation: '');
 
     getWord();
+  }
+
+  void getFavoriteBox() async {
+    favoriteBox = await Hive.openBox<bool>('favoriteBox');
+    _isFavorite = favoriteBox.get(widget.word, defaultValue: false)!;
   }
 
   void getWord() async {
@@ -136,19 +145,28 @@ class InfoPageState extends State<InfoPage> {
           children: [
             IconButton(onPressed: (){}, icon: const Icon(Icons.volume_up)),
             IconButton(
-              isSelected: false,
-              icon: const Icon(Icons.settings_outlined),
-              selectedIcon: const Icon(Icons.settings),
+              isSelected: _isFavorite,
+              icon: const Icon(Icons.favorite_outline),
+              selectedIcon: const Icon(Icons.favorite),
               onPressed: () {
-                // setState(() {
-                //   standardSelected = !standardSelected;
-                // });
+                setState(() {
+                  _isFavorite = !_isFavorite;
+                });
+                setFavorite(_isFavorite);
               },
             ),
           ],
         )
       ],
     );
+  }
+
+  void setFavorite(bool favoriteState) {
+    if(favoriteState) {
+      favoriteBox.put(widget.word, true);
+    } else {
+      favoriteBox.delete(widget.word);
+    }
   }
 
   // ignore: non_constant_identifier_names
