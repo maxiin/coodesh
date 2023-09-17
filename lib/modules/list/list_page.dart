@@ -84,10 +84,10 @@ class ListPageState extends State<ListPage> {
               child: Center(
                 child: OutlinedButton(
                   onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => InfoPage(_items[index])),
-                      );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => InfoPage(_items[index])),
+                    );
                   },
                   child: Text(_items[index]),
                 )
