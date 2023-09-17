@@ -49,8 +49,8 @@ void main() {
       const endLine = 5;
 
       // Load a test file from the 'test_assets' directory for this test.
-      final ByteData data = await rootBundle.load('test_assets/test_list.txt');
-      final List<String> expectedLines = utf8.decode(data.buffer.asUint8List()).split('\n');
+      final ByteData data = await rootBundle.load('test_assets/test_list.csv');
+      final List<String> expectedLines = utf8.decode(data.buffer.asUint8List()).split(',');
 
       final lines = await dataSource.getLines(startLine, endLine);
 

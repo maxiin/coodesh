@@ -10,13 +10,13 @@ class ListFileDataSource {
 
     final linesInRange = <String>[];
     int currentLine = 0;
-    final ByteData data = await rootBundle.load('assets/english_frequency_10k.txt');
-    final List<String> lines = utf8.decode(data.buffer.asUint8List()).split('\n');
+    final ByteData data = await rootBundle.load('assets/english_frequency_10k.csv');
+    final List<String> lines = utf8.decode(data.buffer.asUint8List()).split(',');
 
     for (var line in lines) {
       currentLine++;
       if (currentLine >= startLine && currentLine <= endLine) {
-        linesInRange.add(line.replaceAll('\r', ''));
+        linesInRange.add(line);
       }
       if (currentLine > endLine) {
         break; // Stop reading after reaching the end line
