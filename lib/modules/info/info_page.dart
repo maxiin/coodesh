@@ -4,6 +4,7 @@ import 'package:coodesh/modules/info/domain/info_repository.dart';
 import 'package:coodesh/modules/info/domain/info_usecase.dart';
 import 'package:coodesh/shared/model/word.dart';
 import 'package:dartz/dartz.dart' as dz;
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
@@ -34,7 +35,8 @@ class InfoPageState extends State<InfoPage> {
     // Setup get.it dependencies
     try{
       _flutterTts = _getIt.get<FlutterTts>();
-      _getIt.registerLazySingleton<InfoWordsApiDataSource>(() => InfoWordsApiDataSource());
+      _getIt.registerLazySingleton<http.Client>(() => http.Client());
+      _getIt.registerLazySingleton<InfoWordsApiDataSource>(() => InfoWordsApiDataSource((_getIt<http.Client>())));
       _getIt.registerLazySingleton<InfoRepository>(() => InfoRepository(_getIt<InfoWordsApiDataSource>()));
       _getIt.registerLazySingleton<InfoUseCase>(() => InfoUseCase(_getIt<InfoRepository>()));
     } catch (e){

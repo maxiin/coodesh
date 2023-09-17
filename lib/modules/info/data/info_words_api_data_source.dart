@@ -8,6 +8,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class InfoWordsApiDataSource {
+  final http.Client _client;
+
+  InfoWordsApiDataSource(this._client);
+
   Future<Either<Failure, Word>> getWord(String word) async {
     if (word.isEmpty) {
       return Left(ArgumentFailure(message: 'Start line must be less than or equal to end line'));
@@ -19,7 +23,7 @@ class InfoWordsApiDataSource {
     };
 
     try {
-      final response = await http.get(url, headers: headers);
+      final response = await _client.get(url, headers: headers);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
