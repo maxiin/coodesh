@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:coodesh/failures.dart';
 import 'package:coodesh/modules/info/domain/model/word.dart';
 import 'package:dartz/dartz.dart';
@@ -27,6 +28,8 @@ class InfoWordsApiDataSource {
         debugPrint('Request failed with status: ${response.statusCode}');
         return Left(ApiFailure(message: response.body, code: response.statusCode));
       }
+    } on SocketException catch (error) {
+      return Left(ApiFailure(message: error.toString(), code: 500));
     } catch (error) {
       return Left(GenericFailure(message: error.toString()));
     }

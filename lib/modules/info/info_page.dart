@@ -7,6 +7,7 @@ import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:collection/collection.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class InfoPage extends StatefulWidget {
   final String word;
@@ -49,11 +50,40 @@ class InfoPageState extends State<InfoPage> {
         _wordObj = response.getOrElse(() => Word(word: widget.word, definitions: {}, pronunciation: ''));
       } else {
         Failure fail = response.fold((l) => l, (r) => GenericFailure(message: 'Other'));
+        if(fail is ApiFailure){
+          loadOffline();
+        }
         debugPrint('${fail.runtimeType}: ${fail.message}');
       }
       _isLoading = false;
-      debugPrint(_wordObj!.definitions.toString());
     });
+    saveOffline();
+  }
+
+  void loadOffline() async {
+    var box = await Hive.openBox<Map<String, dynamic>>('wordList');
+    Map<String, dynamic>? jsonWord = box.get(widget.word);
+    if(jsonWord == null){
+      return;
+    }
+    setState(() {
+      Word? word;
+      try {
+        word = Word.fromJson(jsonWord);
+      } catch(e) {
+        debugPrint(e.toString());
+      }
+      if(word != null) {
+        _wordObj = word;
+      }
+    });
+  }
+
+  void saveOffline() async {
+    var box = await Hive.openBox<Map<String, dynamic>>('wordList');
+    if(_wordObj != null){
+      await box.put(_wordObj!.word, _wordObj!.toJson());
+    }
   }
 
   // ignore: non_constant_identifier_names
