@@ -22,7 +22,7 @@ class HistoryPageState extends State<HistoryPage> {
     var box = await Hive.openBox('historyList');
     List<Word> history = box.get('list', defaultValue: <Word>[])!.cast<Word>();
     setState(() {
-      words = history!.reversed.toList();
+      words = history.reversed.toList();
     });
   }
 
