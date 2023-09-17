@@ -1,6 +1,6 @@
 import 'package:coodesh/failures.dart';
 import 'package:coodesh/modules/info/domain/info_repository.dart';
-import 'package:coodesh/modules/info/domain/model/word.dart';
+import 'package:coodesh/shared/model/word.dart';
 import 'package:dartz/dartz.dart';
 
 class InfoUseCase { 

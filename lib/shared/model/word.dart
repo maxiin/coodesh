@@ -1,7 +1,17 @@
-class Word {
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'word.g.dart';
+
+@HiveType(typeId: 1)
+class Word extends HiveObject {
+  @HiveField(0)
   final String word;
+  @HiveField(1)
   final Map<String, List<String>> definitions;
+  @HiveField(2)
   final String pronunciation;
+  @HiveField(3)
+  bool isFavorite = false;
 
   Word({
     required this.word,

@@ -2,7 +2,7 @@ import 'package:coodesh/failures.dart';
 import 'package:coodesh/modules/info/data/info_words_api_data_source.dart';
 import 'package:coodesh/modules/info/domain/info_repository.dart';
 import 'package:coodesh/modules/info/domain/info_usecase.dart';
-import 'package:coodesh/modules/info/domain/model/word.dart';
+import 'package:coodesh/shared/model/word.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -61,28 +61,29 @@ class InfoPageState extends State<InfoPage> {
   }
 
   void loadOffline() async {
-    var box = await Hive.openBox<Map<String, dynamic>>('wordList');
-    Map<String, dynamic>? jsonWord = box.get(widget.word);
-    if(jsonWord == null){
+    var box = await Hive.openBox<Word>('wordList');
+    Word? word = box.get(widget.word);
+    if(word == null){
       return;
     }
     setState(() {
-      Word? word;
-      try {
-        word = Word.fromJson(jsonWord);
-      } catch(e) {
-        debugPrint(e.toString());
-      }
-      if(word != null) {
-        _wordObj = word;
-      }
+      _wordObj = word;
     });
   }
 
   void saveOffline() async {
-    var box = await Hive.openBox<Map<String, dynamic>>('wordList');
+    var box = await Hive.openBox<Word>('wordList');
+    var historyBox = await Hive.openBox('historyList');
     if(_wordObj != null){
-      await box.put(_wordObj!.word, _wordObj!.toJson());
+      await box.put(_wordObj!.word, _wordObj!);
+
+      final List<Word> historyList = historyBox.get('list', defaultValue: <Word>[])!.cast<Word>();
+      if (historyList.isNotEmpty && historyList.length >= 30) {
+        // Remove the oldest item (last item) if the limit is reached
+        historyList.removeAt(0);
+      }
+      historyList.add(_wordObj!);
+      await historyBox.put('list', historyList);
     }
   }
 
@@ -183,20 +184,23 @@ class InfoPageState extends State<InfoPage> {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Builder(
-          builder: (context) {
-            if(_isLoading){
-              return const Center(child: CircularProgressIndicator(),);
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Builder(
+            builder: (context) {
+              if(_isLoading){
+                return const Center(child: CircularProgressIndicator(),);
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  WordBox(),
+                  const SizedBox(height: 16,),
+                  MeaningList(),
+                ],
+              );
             }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                WordBox(),
-                const SizedBox(height: 16,),
-                MeaningList(),
-              ],
-            );
-          }
+          ),
         ),
       ),
     );

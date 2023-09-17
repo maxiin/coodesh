@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:coodesh/failures.dart';
-import 'package:coodesh/modules/info/domain/model/word.dart';
+import 'package:coodesh/shared/model/word.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
