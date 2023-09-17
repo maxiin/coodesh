@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class ListWords extends StatelessWidget {
   final List<Word> words;
-  Function? onNavigationBack;
+  final Function? onNavigationBack;
 
-  ListWords(this.words, {super.key, this.onNavigationBack});
+  const ListWords(this.words, {super.key, this.onNavigationBack});
 
   @override
   Widget build(BuildContext context) {

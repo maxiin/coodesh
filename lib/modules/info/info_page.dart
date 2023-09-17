@@ -5,6 +5,7 @@ import 'package:coodesh/modules/info/domain/info_usecase.dart';
 import 'package:coodesh/shared/model/word.dart';
 import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:collection/collection.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,6 +25,7 @@ class InfoPageState extends State<InfoPage> {
   bool _isLoading = true;
   bool _isFavorite = false;
   late Box<bool> favoriteBox;
+  FlutterTts? _flutterTts;
 
   @override
   void initState() {
@@ -31,6 +33,7 @@ class InfoPageState extends State<InfoPage> {
 
     // Setup get.it dependencies
     try{
+      _flutterTts = _getIt.get<FlutterTts>();
       _getIt.registerLazySingleton<InfoWordsApiDataSource>(() => InfoWordsApiDataSource());
       _getIt.registerLazySingleton<InfoRepository>(() => InfoRepository(_getIt<InfoWordsApiDataSource>()));
       _getIt.registerLazySingleton<InfoUseCase>(() => InfoUseCase(_getIt<InfoRepository>()));
@@ -43,6 +46,12 @@ class InfoPageState extends State<InfoPage> {
     _wordObj = Word(word: widget.word, definitions: {}, pronunciation: '');
 
     getWord();
+  }
+
+  @override
+  void dispose() {
+    _stopTTS();
+    super.dispose();
   }
 
   void getFavoriteBox() async {
@@ -96,6 +105,18 @@ class InfoPageState extends State<InfoPage> {
     }
   }
 
+  Future _speak(String word) async{
+    if(_flutterTts != null){
+      await _flutterTts!.speak(word);
+    }
+  }
+
+  Future _stopTTS() async{
+    if(_flutterTts != null){
+      await _flutterTts!.stop();
+    }
+  }
+
   // ignore: non_constant_identifier_names
   Widget WordBox() {
     return Row(
@@ -143,7 +164,12 @@ class InfoPageState extends State<InfoPage> {
         ),
         Column(
           children: [
-            IconButton(onPressed: (){}, icon: const Icon(Icons.volume_up)),
+            IconButton(
+              icon: const Icon(Icons.volume_up),
+              onPressed: (){
+                _speak(_wordObj!.word);
+              },
+            ),
             IconButton(
               isSelected: _isFavorite,
               icon: const Icon(Icons.favorite_outline),

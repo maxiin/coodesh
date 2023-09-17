@@ -4,12 +4,21 @@ import 'package:coodesh/modules/list/list_page.dart';
 import 'package:coodesh/shared/model/word.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
   Hive.registerAdapter(WordAdapter());
+  
+  final GetIt getIt = GetIt.instance;
+  FlutterTts flutterTts = FlutterTts();
+  if(await flutterTts.isLanguageAvailable("en-US")){
+    await flutterTts.setLanguage("en-US");
+  }
+  getIt.registerLazySingleton<FlutterTts>(() => flutterTts);
   runApp(const App());
 }
 
