@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class ListWords extends StatelessWidget {
   final List<Word> words;
+  Function? onNavigationBack;
 
-  const ListWords(this.words, {super.key});
+  ListWords(this.words, {super.key, this.onNavigationBack});
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +34,14 @@ class ListWords extends StatelessWidget {
               ],
             ),
           ),
-          onTap: () {
-            Navigator.push(
+          onTap: () async {
+            await Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => InfoPage(words[index].word)),
             );
+            if(onNavigationBack != null){
+              onNavigationBack!();
+            }
           },
         );
       },

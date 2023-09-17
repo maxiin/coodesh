@@ -29,7 +29,7 @@ class HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListWords(words)
+      body: ListWords(words, onNavigationBack: loadHistory)
     );
   }
 }

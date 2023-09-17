@@ -44,7 +44,7 @@ class FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListWords(words)
+      body: ListWords(words, onNavigationBack: loadHistory)
     );
   }
 }
