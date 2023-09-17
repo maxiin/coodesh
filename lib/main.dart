@@ -38,6 +38,11 @@ class AppState extends State<App> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        colorSchemeSeed: const Color(0xff254f5f),
+        brightness: Brightness.dark,
+        useMaterial3: true,
+      ),
       home: DefaultTabController(
         length: 3, // Number of tabs
         child: Scaffold(

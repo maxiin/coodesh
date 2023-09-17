@@ -21,21 +21,19 @@ class WordAdapter extends TypeAdapter<Word> {
       definitions: (fields[1] as Map).map((dynamic k, dynamic v) =>
           MapEntry(k as String, (v as List).cast<String>())),
       pronunciation: fields[2] as String,
-    )..isFavorite = fields[3] as bool;
+    );
   }
 
   @override
   void write(BinaryWriter writer, Word obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.word)
       ..writeByte(1)
       ..write(obj.definitions)
       ..writeByte(2)
-      ..write(obj.pronunciation)
-      ..writeByte(3)
-      ..write(obj.isFavorite);
+      ..write(obj.pronunciation);
   }
 
   @override

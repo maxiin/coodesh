@@ -89,43 +89,65 @@ class InfoPageState extends State<InfoPage> {
 
   // ignore: non_constant_identifier_names
   Widget WordBox() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0), // Rounded corners
-        border: Border.all(
-          color: Colors.blue, // Border color
-          width: 2.0, // Border width
-        ),
-      ),
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          Flexible(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0), // Rounded corners
+              border: Border.all(
+                color: Theme.of(context).colorScheme.primary, // Border color
+                width: 2.0, // Border width
+              ),
+            ),
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
               children: [
-                Text(
-                  _wordObj!.word,
-                  style: const TextStyle(
-                    fontSize: 36.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  _wordObj!.pronunciation,
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.black54,
-                    fontStyle: FontStyle.italic,
+                Flexible(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _wordObj!.word,
+                        style: TextStyle(
+                          fontSize: 36.0,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      Text(
+                        _wordObj!.pronunciation,
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          color: Theme.of(context).textTheme.bodySmall?.color,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+        Column(
+          children: [
+            IconButton(onPressed: (){}, icon: const Icon(Icons.volume_up)),
+            IconButton(
+              isSelected: false,
+              icon: const Icon(Icons.settings_outlined),
+              selectedIcon: const Icon(Icons.settings),
+              onPressed: () {
+                // setState(() {
+                //   standardSelected = !standardSelected;
+                // });
+              },
+            ),
+          ],
+        )
+      ],
     );
   }
 
@@ -157,9 +179,10 @@ class InfoPageState extends State<InfoPage> {
               children: [
                 Text(
                   key,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12.0,
                     fontStyle: FontStyle.italic,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 ...meanings.mapIndexed((index, e) => 

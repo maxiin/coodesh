@@ -10,8 +10,6 @@ class Word extends HiveObject {
   final Map<String, List<String>> definitions;
   @HiveField(2)
   final String pronunciation;
-  @HiveField(3)
-  bool isFavorite = false;
 
   Word({
     required this.word,

@@ -43,7 +43,7 @@ class HistoryPageState extends State<HistoryPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         words[index].word, // Button text
-                        style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Theme.of(context).primaryColor),
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Theme.of(context).colorScheme.primary),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -56,7 +56,7 @@ class HistoryPageState extends State<HistoryPage> {
                       // ),
                       Icon(
                         Icons.chevron_right, // Right arrow icon
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ],
                   ),
