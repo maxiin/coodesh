@@ -7,6 +7,11 @@
 This project consists of a simple dictionary, showing a grid of words that, when open, present the user with the IPA and meanings for the selected word.
 The user can hear the pronunciation of a word and also save the word as a favorite.
 
+## Screenshots
+List|Word|Word Detail|History|Favorites
+:-------------------------:|:--------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![Image 1](sc/0.png) | ![Image 2](sc/1.png) | ![Image 3](sc/2.png) ![Image 4](sc/3.png) | ![Image 5](sc/4.png) | ![Image 6](sc/5.png)
+
 ## Technical Details
 ### Architecture
 
