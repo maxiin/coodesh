@@ -14,7 +14,7 @@ void main(List<String> arguments) {
     return;
   }
 
-  final envContent = 'RAPIDAPI_KEY:$apiKey';
+  final envContent = 'RAPIDAPI_KEY=$apiKey';
 
   try {
     final file = File('.env');
